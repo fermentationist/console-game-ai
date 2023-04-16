@@ -1,8 +1,8 @@
 {
   "name": "console-game-dall-e",
-  "version": "1.0.0",
-  "description": "an Infocom-style text adventure, played in the browser's JavaScript console",
-  "main": "lib/server.js",
+  "version": "0.0.1",
+  "description": "full-stack version of ConsoleGame (an Infocom-style text adventure, played in the browser's JavaScript console) enhanced with DALL-E image generation",
+  "main": "server_dist/server/server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fermentationist/ConsoleGame.git"
+    "url": "git+https://github.com/fermentationist/console-game-dall-e.git"
   },
   "author": "fermentationist",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fermentationist/ConsoleGame/issues"
+    "url": "https://github.com/fermentationist/console-game-dall-e/issues"
   },
-  "homepage": "https://github.com/fermentationist/ConsoleGame#readme",
+  "homepage": "https://github.com/fermentationist/console-game-dall-e#readme",
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "^11.0.0",
