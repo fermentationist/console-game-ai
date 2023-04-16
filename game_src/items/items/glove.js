@@ -8,12 +8,11 @@ export default (game) => {
     examine () {
       game.state.objectMode = false;
       if (this.contents.length) {
+        Object.getPrototypeOf(this).examine.call(this);
         const hiddenItem = this.contents.pop();
-        game.log.p(`${this.description}\nAs you examine the glove, a ${hiddenItem.name} falls out, onto the floor.`);
+        game.log.p(`As you examine the glove, a ${hiddenItem.name} falls out, onto the floor.`);
         game.state.currentMapCell.addToEnv(hiddenItem.name);
-        return;
       }
-      return this.description;
     }
   }
 }

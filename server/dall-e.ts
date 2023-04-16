@@ -128,7 +128,7 @@ export async function getImage(
     openai = new OpenAIApi(configuration);
   }
   try {
-    console.log("Getting completion from OpenAI API...");
+    console.log("Getting image from DALL-E API...");
     performance.mark("start");
     const modifiedPrompt = style ? `in the style of ${style}:{${prompt}}` : prompt;
     const response = await openai.createImage({

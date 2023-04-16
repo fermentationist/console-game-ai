@@ -518,35 +518,28 @@ export default class Game {
     });
   }
 
-  async getGeneratedImageUrl(prompt: string, style?: string) {
+  async getGeneratedImageUrl(prompt: string, style?: string, itemName?: string) {
     try {
       // cancel any pending image request
       this.imageRequest?.abort();
     } catch (error) {
       // do nothing
     } 
-    const { url, prompt: previousPrompt } =
-      this.state.currentMapCell.image || {};
+    const src = (itemName && this.state.pendingAction === "examine") ? this.items[`_${itemName}`] : this.state.currentMapCell;
+    const { url, prompt: previousPrompt } = src.image || {};
     const validUrl = url && (await this.checkImageUrl(url));
     if (validUrl && prompt === previousPrompt) {
       return url;
     }
     this.imageRequest = new ImageRequest(prompt, style);
     const imageUrl = await this.imageRequest.request();
-    this.state.currentMapCell.image = { url: imageUrl, prompt };
+    src.image = { url: imageUrl, prompt };
     return imageUrl;
   }
 
-  clearWindow() {
-    const contentDiv = document.getElementById("console-game-content");
-    if (contentDiv) {
-      contentDiv.innerHTML = "";
-    }
-  }
 
-  async displayGeneratedImage(prompt: string) {
-    // const spinnerAlreadyAppended = (parent: HTMLElement) =>
-    //   this.spinner && parent.contains(this.spinner.element);
+
+  async displayGeneratedImage(prompt: string, itemName?: string) {
     const contentDiv = document.getElementById("console-game-content");
     if (contentDiv) {
       contentDiv.innerHTML = "";
@@ -555,20 +548,14 @@ export default class Game {
         "width:100vw;height:1024px;background-color:black;position:relative;display:flex;flex-direction:column;place-content:center;place-items:center;"
       );
       this.spinner && contentDiv.appendChild(this.spinner?.element);
-      // if (!spinnerAlreadyAppended(contentDiv)) {
-      // }
       this.spinner?.show();
       const imageUrl = await this.getGeneratedImageUrl(
         prompt,
-        this.state.imageStyle
+        this.state.imageStyle,
+        itemName
       );
       // cache the image
       this.state.currentMapCell.image = { url: imageUrl, prompt };
-      // const existingImage: any = document.getElementById("generated-image");
-      // if (existingImage) {
-      //   existingImage.src = imageUrl;
-      // } else {
-      // }
       const image = document.createElement("img");
       image.src = imageUrl;
       image.id = "generated-image";

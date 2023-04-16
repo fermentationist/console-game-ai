@@ -116,6 +116,10 @@ export default function initItemProto(game: GameType) {
       if (this.activated && this.lightCount > 0) {
         game.log.p("Its glow illuminates the darkness.");
       }
+      if (game.state.imageMode && !game.state.restoreMode) {
+        const itemDescription = `${this.name}: ${this.description}`;
+        game.debouncedDisplayGeneratedImage && game.debouncedDisplayGeneratedImage(itemDescription, this.name);
+      }
     },
     extinguish: function () {
       game.state.objectMode = false;
