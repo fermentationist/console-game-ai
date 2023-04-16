@@ -1,7 +1,7 @@
 {
   "name": "console-game-dall-e",
   "version": "0.0.1",
-  "description": "full-stack version of ConsoleGame (an Infocom-style text adventure, played in the browser's JavaScript console) enhanced with DALL-E image generation",
+  "description": "Full-stack version of ConsoleGame (an Infocom-style text adventure, played in the browser's JavaScript console) enhanced with DALL-E image generation",
   "main": "server_dist/server/server.js",
   "type": "module",
   "scripts": {
