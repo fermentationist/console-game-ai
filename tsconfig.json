@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext", "DOM"],
+    "target": "es2017",
+    "module": "esnext",
+    "declaration": true,
+    "outDir": "server_dist",
+    "strict": true,
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "skipLibCheck": true
+  },
+  "include": ["server", "game_src"],
+  "exclude": ["node_modules", "lib", "test"]
+}

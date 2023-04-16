@@ -1,0 +1,38 @@
+{
+  "name": "console-game-dall-e",
+  "version": "1.0.0",
+  "description": "an Infocom-style text adventure, played in the browser's JavaScript console",
+  "main": "lib/server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && rollup -c rollup.config.ts --configPlugin typescript && rm -r server_dist/game_src",
+    "server": "node server_dist/server/server.js",
+    "start": "npm run build && npm run server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fermentationist/ConsoleGame.git"
+  },
+  "author": "fermentationist",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fermentationist/ConsoleGame/issues"
+  },
+  "homepage": "https://github.com/fermentationist/ConsoleGame#readme",
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.11",
+    "rollup": "^3.20.2",
+    "tslib": "^2.5.0",
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "openai": "^3.2.1"
+  }
+}
