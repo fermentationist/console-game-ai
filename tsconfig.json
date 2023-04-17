@@ -4,7 +4,7 @@
     "target": "es2017",
     "module": "esnext",
     "declaration": true,
-    "outDir": "server_dist",
+    "outDir": "dist",
     "strict": true,
     "noImplicitAny": true,
     "noEmitOnError": true,
@@ -15,6 +15,6 @@
     "allowJs": true,
     "skipLibCheck": true
   },
-  "include": ["server", "game_src"],
-  "exclude": ["node_modules", "lib", "test"]
+  "include": ["server", "game"],
+  "exclude": ["node_modules", "dist", "test"]
 }

@@ -34,10 +34,10 @@ export default  {
   load: async (id) => {
     if (id === "rollup-plugin-item-loader:items") {
       const outputObject = {};
-      const filenames = fs.readdirSync("./server_dist/game_src/items/items");
+      const filenames = fs.readdirSync("./dist/game/items/items");
       const jsFiles = filenames.filter((filename) => filename.match(/\.js$/));
       for (const filename of jsFiles) {
-        const importedObject = await import(`./server_dist/game_src/items/items/${filename}`);
+        const importedObject = await import(`./dist/game/items/items/${filename}`);
         outputObject[`_${filename.replace(/\.(ts|js)/, "")}`] = importedObject.default;
       }
       return `export default ${stringifyObjectWithFunctions(outputObject)}`;

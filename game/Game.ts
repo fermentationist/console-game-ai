@@ -103,7 +103,11 @@ export default class Game {
     this.spinner = new LoadingSpinner();
     this.log.tiny("Game initialized.");
     // de
-    this.debouncedDisplayGeneratedImage = debounce(this.displayGeneratedImage, IMAGE_MODE_DEBOUNCE_MS, this);
+    this.debouncedDisplayGeneratedImage = debounce(
+      this.displayGeneratedImage,
+      IMAGE_MODE_DEBOUNCE_MS,
+      this
+    );
   }
 
   /**
@@ -317,7 +321,8 @@ export default class Game {
     this.log.p(fullDescription);
     if (this.state.imageMode && !this.state.restoreMode) {
       const imageDescription = `${this.state.currentMapCell.name}: ${description} ${itemStr} ${nestedItemStr}`;
-      this.debouncedDisplayGeneratedImage && this.debouncedDisplayGeneratedImage(imageDescription);
+      this.debouncedDisplayGeneratedImage &&
+        this.debouncedDisplayGeneratedImage(imageDescription);
     }
   }
 
@@ -518,14 +523,21 @@ export default class Game {
     });
   }
 
-  async getGeneratedImageUrl(prompt: string, style?: string, itemName?: string) {
+  async getGeneratedImageUrl(
+    prompt: string,
+    style?: string,
+    itemName?: string
+  ) {
     try {
       // cancel any pending image request
       this.imageRequest?.abort();
     } catch (error) {
       // do nothing
-    } 
-    const src = (itemName && this.state.pendingAction === "examine") ? this.items[`_${itemName}`] : this.state.currentMapCell;
+    }
+    const src =
+      itemName && this.state.pendingAction === "examine"
+        ? this.items[`_${itemName}`]
+        : this.state.currentMapCell;
     const { url, prompt: previousPrompt } = src.image || {};
     const validUrl = url && (await this.checkImageUrl(url));
     if (validUrl && prompt === previousPrompt) {
@@ -537,15 +549,13 @@ export default class Game {
     return imageUrl;
   }
 
-
-
   async displayGeneratedImage(prompt: string, itemName?: string) {
     const contentDiv = document.getElementById("console-game-content");
     if (contentDiv) {
       contentDiv.innerHTML = "";
       contentDiv.setAttribute(
         "style",
-        "width:100vw;height:1024px;background-color:black;position:relative;display:flex;flex-direction:column;place-content:center;place-items:center;"
+        "width:100vw;height:100vh;background-color:black;position:relative;display:flex;flex-direction:column;place-content:center;place-items:center;"
       );
       this.spinner && contentDiv.appendChild(this.spinner?.element);
       this.spinner?.show();
@@ -561,7 +571,7 @@ export default class Game {
       image.id = "generated-image";
       image.setAttribute(
         "style",
-        "height:1024px;width:1024px;position:relative;"
+        "height:100vh;width:100vh;position:relative;"
       );
       contentDiv.appendChild(image);
       this.spinner?.hide();
@@ -584,7 +594,6 @@ export default class Game {
   ) {
     const contentDiv = document.getElementById("console-game-content");
     if (contentDiv) {
-      this.turnDaemon?.removeTimer("map");
       contentDiv.innerHTML = "";
       contentDiv.setAttribute(
         "style",
@@ -803,16 +812,21 @@ export default class Game {
     }
   }
 
-  // setPreference() is used to set a preference (font, size, color) that will be applied when the game is reloaded
+  // setPreference() is used to set a preference (font, size, color, image style) that will be applied when the game is reloaded
   setPreference(value: any) {
     // set preference
+    const negativeResponses = ["no", "off", "false", "none", "null"];
     if (this.state.pendingAction === "style") {
-      this.log.info(`Setting image style to ${value}`);
-      this.state.imageStyle = value;
-      this.state.prefMode = false;
+      this.log.info(`Changing image style from "${this.state.imageStyle}" to "${value}"`);
+      if (negativeResponses.includes(value)) {
+        this.state.imageStyle = null;
+      } else {
+        this.state.imageStyle = value;
+        this.state.prefMode = false;
+      }
     } else if (this.state.pendingAction === "image") {
       const imageMode =
-        !value || value === "false" || value === "none" ? false : true;
+        !value || negativeResponses.includes(value) ? false : true;
       this.log.info(`Setting image mode to ${imageMode}`);
       this.state.imageMode = imageMode;
       this.state.prefMode = false;

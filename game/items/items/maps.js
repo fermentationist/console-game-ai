@@ -15,11 +15,6 @@ export default (game) => {
       const floorMap = game.getFloorMap();
       game.log.map(floorMap);
       game.displayHTMLMap(floorMap);
-      if (!game.turnDaemon.hasTimer("map")) {
-        game.turnDaemon.registerTimer("map", (gameContext) => {
-          gameContext.displayHTMLMap(gameContext.getFloorMap());
-        });
-      }
     },
     use () {
       this.read.call(this);

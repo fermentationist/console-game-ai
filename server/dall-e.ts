@@ -130,7 +130,7 @@ export async function getImage(
   try {
     console.log("Getting image from DALL-E API...");
     performance.mark("start");
-    const modifiedPrompt = style ? `in the style of ${style}:{${prompt}}` : prompt;
+    const modifiedPrompt = `An detailed image,${style ? ` in the style of ${style},`: ""} of the following description of an object or location: """ ${prompt} """`;
     const response = await openai.createImage({
       n: 1,
       prompt: modifiedPrompt,
