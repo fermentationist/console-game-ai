@@ -6,7 +6,7 @@ export default (game) => {
     closed: true,
     listed: false,
     proto: "desk",
-    containedPart: "_nightstand_drawer",
+    containedPart: "nightstand_drawer",
     contents: [],
     get description() {
       return `The nightstand next to the bed is made of wood and is painted white. It has a single drawer, which is ${

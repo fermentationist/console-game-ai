@@ -193,7 +193,7 @@ export default class Game {
     itemArray.forEach((item) => {
       if (typeof item === "string") {
         // accepts a string argument for a single item
-        this.state.inventory.push(this.items[`_${item}`]);
+        this.state.inventory.push(this.items[item]);
       } else {
         this.state.inventory.push(item); // accepts an array for multiple items
       }
@@ -251,7 +251,7 @@ export default class Game {
   // given the name of an item, returns the object from the environment
   inEnvironment(itemName: string) {
     if (itemName === "all") {
-      return this.items._all;
+      return this.items.all;
     }
     const whichEnv = this.fromWhichEnv(itemName);
     const objectFromEnvironment = whichEnv
@@ -265,7 +265,7 @@ export default class Game {
   // returns an object from the inventory, or the entire inventory
   inInventory(itemName: string) {
     if (itemName === "all") {
-      return this.items._all;
+      return this.items.all;
     }
     const [objectFromInventory] = this.state.inventory.filter(
       (item: ItemType) => item.name === itemName
@@ -438,10 +438,10 @@ export default class Game {
     for (let i = 0; i < 3; i++) {
       this.commands.wait;
     }
-    this.items._door.closed = true;
-    this.items._door.locked = true;
-    this.mapKey[this.items._door.lockedTarget].locked = true;
-    this.mapKey[this.items._door.closedTarget].closed = true;
+    this.items.door.closed = true;
+    this.items.door.locked = true;
+    this.mapKey[this.items.door.lockedTarget].locked = true;
+    this.mapKey[this.items.door.closedTarget].closed = true;
     this.displayText((descriptions.captured as string[])[1]);
   }
 
@@ -536,7 +536,7 @@ export default class Game {
     }
     const src =
       itemName && this.state.pendingAction === "examine"
-        ? this.items[`_${itemName}`]
+        ? this.items[itemName]
         : this.state.currentMapCell;
     const { url, prompt: previousPrompt } = src.image || {};
     const validUrl = url && (await this.checkImageUrl(url));
@@ -641,12 +641,9 @@ export default class Game {
 
   again() {
     const lastCommand = this.state.history[this.state.history.length - 1];
-    const itemNames = Object.keys(this.items).map((key) => key.slice(1));
+    const itemNames = Object.keys(this.items);
     if (itemNames.includes(lastCommand)) {
       const pendingActionFn = this.commands[this.state.pendingAction];
-      // const [pendingActionFn] = this.commands.filter(
-      //   (entry) => entry[1].split(",")[0] === this.state.pendingAction
-      // )[0];
       pendingActionFn.call(this, this.state.pendingAction);
     }
     const lastCommandFn = this.commands[lastCommand];

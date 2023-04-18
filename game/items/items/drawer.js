@@ -6,7 +6,7 @@ export default (game) => {
     openable: true,
     closed: true,
     takeable: false,
-    containedIn: "_desk",
+    containedIn: "desk",
     contents: [],
     get description() {
       return this.closed

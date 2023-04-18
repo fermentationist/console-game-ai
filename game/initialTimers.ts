@@ -7,12 +7,12 @@ export default [
 
   // Front door lock timer
   (game: GameType) => {
-    if (game.state.turn === 2 && ! game.items._door.locked) {
+    if (game.state.turn === 2 && ! game.items.door.locked) {
       game.displayText(descriptions.doorLock);
-			game.items._door.closed = true;
-			game.items._door.locked = true;
-			game.mapKey[game.items._door.lockedTarget].locked = true;
-			game.mapKey[game.items._door.closedTarget].closed = true;
+			game.items.door.closed = true;
+			game.items.door.locked = true;
+			game.mapKey[game.items.door.lockedTarget].locked = true;
+			game.mapKey[game.items.door.closedTarget].closed = true;
 		}
   },
 
@@ -31,7 +31,7 @@ export default [
   // Grue timer
   (game: GameType) => {
     if(game.inEnvironment("grue")) {
-      game.items._grue.lurk();
+      game.items.grue.lurk();
     }
   },
 

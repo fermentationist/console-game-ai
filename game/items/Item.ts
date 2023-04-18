@@ -35,7 +35,7 @@ export default function initItemProto(game: GameType) {
       if (!game.inInventory("matchbook")) {
         game.log.p("You don't have the means to light a fire.");
       } else {
-        game.items._matchbook.closed = false;
+        game.items.matchbook.closed = false;
         if (!this.flammable) {
           game.log.p(
             `The meager flame is inadequate to ignite the ${this.name}.`
@@ -221,9 +221,9 @@ export default function initItemProto(game: GameType) {
             game.log.p(`The ${this.name} is now open.`);
           }
           if (game.inInventory("scroll")) {
-            game.removeFromInventory(game.items._scroll);
+            game.removeFromInventory(game.items.scroll);
           } else if (game.inEnvironment("scroll")) {
-            game.state.currentMapCell.removeFromEnv(game.items._scroll);
+            game.state.currentMapCell.removeFromEnv(game.items.scroll);
           }
         } else {
           game.log.p("The rezrov spell has no effect.");

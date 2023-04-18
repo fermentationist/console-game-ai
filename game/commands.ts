@@ -8,9 +8,9 @@ import { ItemType } from "./items/Item";
 export type CommandAlias = [(command: string) => void, string];
 
 // Command functions
-const Commands = function (game: GameType): CommandAlias[] {
+const initCommandAliases = function (game: GameType): CommandAlias[] {
   // Change player's location on the map, given a direction
-  const _movePlayer = (direction: string) => {
+  const movePlayer = (direction: string) => {
     game.state.objectMode = false;
     let newPosition = {
       x: game.state.position.x,
@@ -69,40 +69,40 @@ const Commands = function (game: GameType): CommandAlias[] {
   };
 
   // Describe environment and movement options in current location
-  const _look = (command: string) => {
+  const look = (command: string) => {
     return game.describeSurroundings();
   };
 
-  const _smell = (command: string) => {
+  const smell = (command: string) => {
     game.log.p(game.state.currentMapCell.smell);
     return;
   };
 
-  const _listen = (command: string) => {
+  const listen = (command: string) => {
     game.log.p(game.state.currentMapCell.sound);
     return;
   };
 
   // Handles commands that require an object. Sets pendingAction to the present command, and objectMode so that next command is interpreted as the object of the pending command.
-  const _act_upon = (command: string) => {
+  const act_upon = (command: string) => {
     game.state.objectMode = true;
     game.state.pendingAction = command;
     game.log.p(`What would you like to ${command}?`);
   };
 
-  // _none function is bound to commands that should do nothing at all
-  const _none = () => {}; // do nothing
+  // none function is bound to commands that should do nothing at all
+  const none = () => {}; // do nothing
 
-  const _wait = () => {
+  const wait = () => {
     game.log.p("Time passes...");
   };
 
-  const _go = () => {
+  const go = () => {
     game.log.p("Which direction do you want to go?");
   };
 
   // Displays items in the player's inventory.
-  const _inventory = (command: string) => {
+  const inventory = (command: string) => {
     let items: string[] = [],
       itemsPlusArticles: string[] = [];
     game.state.inventory.forEach((item: ItemType) => {
@@ -138,7 +138,7 @@ const Commands = function (game: GameType): CommandAlias[] {
   };
 
   // Displays inventory as a table.
-  const _inventoryTable = (command: string) => {
+  const inventoryTable = (command: string) => {
     const table = game.state.inventory.map((item: ItemType) => {
       const { name, description } = item;
       return { name, description };
@@ -147,7 +147,7 @@ const Commands = function (game: GameType): CommandAlias[] {
   };
 
   // Handles commands that are item names.
-  const _items = (itemName: string) => {
+  const items = (itemName: string) => {
     // Exit function with error message if previous command does not require an object
     if (!game.state.objectMode && itemName !== "maps") {
       game.log.invalid("Invalid command.");
@@ -165,11 +165,11 @@ const Commands = function (game: GameType): CommandAlias[] {
     item[action]();
   };
 
-  const _yell = () => {
+  const yell = () => {
     game.log.scream("Aaaarrgh!!!!");
   };
 
-  const _verbose = () => {
+  const verbose = () => {
     if (game.state.verbose) {
       game.state.verbose = false;
       game.log.p("Verbose mode off.");
@@ -179,13 +179,13 @@ const Commands = function (game: GameType): CommandAlias[] {
     game.log.p("Maximum verbosity.");
   };
 
-  const _score = () => {
+  const score = () => {
     game.log.p(
       `Your score is ${game.state.score} in ${game.state.turn} turns.`
     );
   };
 
-  const _commands = () => {
+  const commands = () => {
     const commandAliases = game.commandList.map(
       ([_, aliases]: CommandAlias) => aliases
     );
@@ -197,11 +197,11 @@ const Commands = function (game: GameType): CommandAlias[] {
     game.log.table(commandTable);
   };
 	
-  const _again = () => {
+  const again = () => {
     game.again();
   };
 
-  const _poof = () => {
+  const poof = () => {
     const body = document.querySelector("body");
     body?.parentNode?.removeChild(body);
     game.log.papyracy(">poof<");
@@ -210,70 +210,68 @@ const Commands = function (game: GameType): CommandAlias[] {
   // Commands and their aliases
   const commandAliases: CommandAlias[] = [
     // Move
-    [_movePlayer, cases("north") + ",n,N"],
-    [_movePlayer, cases("south") + ",s,S"],
-    [_movePlayer, cases("east") + ",e,E"],
-    [_movePlayer, cases("west") + ",w,W"],
-    [_movePlayer, cases("up") + ",u,U"],
-    [_movePlayer, cases("down") + ",d,D"],
+    [movePlayer, cases("north") + ",n,N"],
+    [movePlayer, cases("south") + ",s,S"],
+    [movePlayer, cases("east") + ",e,E"],
+    [movePlayer, cases("west") + ",w,W"],
+    [movePlayer, cases("up") + ",u,U"],
+    [movePlayer, cases("down") + ",d,D"],
 
     // Direct Actions
-    [_go, aliasString("go", thesaurus)],
-    [_inventory, aliasString("inventory", thesaurus) + ",i,I"],
-    [_listen, aliasString("listen", thesaurus)],
-    [_look, aliasString("look", thesaurus) + ",l,L"],
-    [_smell, aliasString("smell", thesaurus)],
-    [_wait, aliasString("wait", thesaurus) + ",z,Z,zzz,ZZZ,Zzz"],
-    [_yell, aliasString("yell", thesaurus)],
-    [_again, aliasString("again", thesaurus) + ",g,G"],
+    [go, aliasString("go", thesaurus)],
+    [inventory, aliasString("inventory", thesaurus) + ",i,I"],
+    [listen, aliasString("listen", thesaurus)],
+    [look, aliasString("look", thesaurus) + ",l,L"],
+    [smell, aliasString("smell", thesaurus)],
+    [wait, aliasString("wait", thesaurus) + ",z,Z,zzz,ZZZ,Zzz"],
+    [yell, aliasString("yell", thesaurus)],
+    [again, aliasString("again", thesaurus) + ",g,G"],
 
     // Item methods
-    [_act_upon, aliasString("burn", thesaurus)],
-    [_act_upon, aliasString("climb", thesaurus)],
-    [_act_upon, aliasString("close", thesaurus)],
-    [_act_upon, aliasString("contemplate", thesaurus)],
-    [_act_upon, aliasString("drink", thesaurus)],
-    [_act_upon, aliasString("drop", thesaurus)],
-    [_act_upon, aliasString("eat", thesaurus)],
-    [_act_upon, aliasString("examine", thesaurus) + ",x,X"],
-    [_act_upon, aliasString("extinguish", thesaurus)],
-    [_act_upon, aliasString("flush", thesaurus)],
-    [_act_upon, aliasString("light", thesaurus)],
-    [_act_upon, aliasString("lock", thesaurus)],
-    [_act_upon, aliasString("move", thesaurus)],
-    [_act_upon, aliasString("open", thesaurus)],
-    [_act_upon, aliasString("play", thesaurus)],
-    [_act_upon, aliasString("project", thesaurus)],
-    [_act_upon, aliasString("pull", thesaurus)],
-    [_act_upon, aliasString("read", thesaurus)],
-    [_act_upon, aliasString("rezrov", thesaurus)],
-    [_act_upon, aliasString("frotz", thesaurus)],
-    [_act_upon, aliasString("cast", thesaurus)],
-    [_act_upon, aliasString("rescue", thesaurus)],
-    [_act_upon, aliasString("spray", thesaurus)],
-    [_act_upon, aliasString("take", thesaurus)],
-    [_act_upon, aliasString("turn", thesaurus)],
-    [_act_upon, aliasString("unlock", thesaurus)],
-    [_act_upon, aliasString("use", thesaurus)],
+    [act_upon, aliasString("burn", thesaurus)],
+    [act_upon, aliasString("climb", thesaurus)],
+    [act_upon, aliasString("close", thesaurus)],
+    [act_upon, aliasString("contemplate", thesaurus)],
+    [act_upon, aliasString("drink", thesaurus)],
+    [act_upon, aliasString("drop", thesaurus)],
+    [act_upon, aliasString("eat", thesaurus)],
+    [act_upon, aliasString("examine", thesaurus) + ",x,X"],
+    [act_upon, aliasString("extinguish", thesaurus)],
+    [act_upon, aliasString("flush", thesaurus)],
+    [act_upon, aliasString("light", thesaurus)],
+    [act_upon, aliasString("lock", thesaurus)],
+    [act_upon, aliasString("move", thesaurus)],
+    [act_upon, aliasString("open", thesaurus)],
+    [act_upon, aliasString("play", thesaurus)],
+    [act_upon, aliasString("project", thesaurus)],
+    [act_upon, aliasString("pull", thesaurus)],
+    [act_upon, aliasString("read", thesaurus)],
+    [act_upon, aliasString("rezrov", thesaurus)],
+    [act_upon, aliasString("frotz", thesaurus)],
+    [act_upon, aliasString("cast", thesaurus)],
+    [act_upon, aliasString("rescue", thesaurus)],
+    [act_upon, aliasString("spray", thesaurus)],
+    [act_upon, aliasString("take", thesaurus)],
+    [act_upon, aliasString("turn", thesaurus)],
+    [act_upon, aliasString("unlock", thesaurus)],
+    [act_upon, aliasString("use", thesaurus)],
 
     // Misc
-    [_commands, cases("commands") + ",c,C"],
-    [_inventoryTable, cases("inventoryTable", "invTable", "invt")],
-    [_verbose, cases("verbose")],
-    [_score, cases("score")],
+    [commands, cases("commands") + ",c,C"],
+    [inventoryTable, cases("inventoryTable", "invTable", "invt")],
+    [verbose, cases("verbose")],
+    [score, cases("score")],
 
     // Other
-    [_poof, cases("poof")],
+    [poof, cases("poof")],
 
-    // this command exists as a kludgy fix for a bug that happens if console is in "eager evaluation" mode. Starting to type "glove" auto-evaluates to "globalThis", which for some reason calls _act_upon("close"). This same goes for the keyword "this". This command tricks auto-evaluation because it prioritizes suggestions alphabetically.
-    [_none, cases("globaa")],
-    [_none, cases("thia")],
+    // this command exists as a kludgy fix for a bug that happens if console is in "eager evaluation" mode. Starting to type "glove" auto-evaluates to "globalThis", which for some reason calls act_upon("close"). This same goes for the keyword "this". This command tricks auto-evaluation because it prioritizes suggestions alphabetically.
+    [none, cases("globaa")],
+    [none, cases("thia")],
   ];
-  const itemNames = Object.keys(game.items).map((itemName) =>
-    itemName.slice(1)
-  );
+  const itemNames = Object.keys(game.items);
   const itemAliases: CommandAlias[] = itemNames.map((itemName) => [
-    _items,
+    items,
     aliasString(itemName, thesaurus),
   ]);
   const aliases = [...commandAliases, ...itemAliases];
@@ -281,4 +279,4 @@ const Commands = function (game: GameType): CommandAlias[] {
   return aliases;
 };
 
-export default Commands;
+export default initCommandAliases;

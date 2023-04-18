@@ -23,7 +23,7 @@ function setPrototypes(
   for (const itemName in items) {
     const item = items[itemName];
     if (item.proto) {
-      Object.setPrototypeOf(item, items[`_${item.proto}`]);
+      Object.setPrototypeOf(item, items[item.proto]);
     }
   }
 }
@@ -38,13 +38,8 @@ function addItemContents(
     if (!item.contents) {
       item.contents = [];
     }
-    const _itemName = itemName[0] === "_" ? itemName : `_${itemName}`;
-    if (_itemName in contentsObj) {
-      const contents = contentsObj[_itemName].map((itemToInclude) => {
-        const _itemToInclude =
-          itemToInclude[0] === "_" ? itemToInclude : `_${itemToInclude}`;
-        return items[_itemToInclude];
-      });
+    if (itemName in contentsObj) {
+      const contents = contentsObj[itemName].map((itemToInclude) => items[itemToInclude]);
       (item.contents as ItemType[]).push(...contents);
     }
     map[itemName] = item;

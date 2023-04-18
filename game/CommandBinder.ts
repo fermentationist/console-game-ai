@@ -1,5 +1,5 @@
-import { GameType } from './Game';
-import { CommandAlias } from './commands';
+import { GameType } from "./Game";
+import { CommandAlias } from "./commands";
 // commands that are reserved words in JavaScript but we will overwrite anyway, (;
 const RESERVED_WORDS_TO_OVERWRITE = [
   "open",
@@ -19,7 +19,7 @@ export default class CommandBinder {
     this.bindCommands = this.bindCommands.bind(this);
   }
 
-    /* 
+  /* 
   *bindCommandToFunction() creates a property on the global object with the command name (and one for each related alias), and binds the function to be invoked to a getter method on the property. 
   This is what allows functions to be invoked by the player in the console without needing to type the invocation operator "()" after the name.
   Thank you to secretGeek for this clever solution. I found it here: https://github.com/secretGeek/console-adventure. You can play his console adventure here: https://rawgit.com/secretGeek/console-adventure/master/log.html
@@ -64,8 +64,11 @@ export default class CommandBinder {
   bindCommands(commands: CommandAlias[]) {
     commands.forEach((commandEntry) => {
       let [interpreterFunction, aliases] = commandEntry;
-      this.bindCommandToFunction(interpreterFunction, aliases, this.game.turnDaemon?.executeCommand);
+      this.bindCommandToFunction(
+        interpreterFunction,
+        aliases,
+        this.game.turnDaemon?.executeCommand
+      );
     });
   }
-
 }

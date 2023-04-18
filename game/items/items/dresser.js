@@ -6,7 +6,7 @@ export default (game) => {
     closed: true,
     listed: true,
     proto: "desk",
-    containedPart: "_dresser_drawer",
+    containedPart: "dresser_drawer",
     contents: [],
     get description () {
       return `The modest wooden dresser is of simple design. The pale blue milk paint that coats it is worn through in several spots from use. It has a large drawer, which is ${this.closed ? "closed" : "open"}.`

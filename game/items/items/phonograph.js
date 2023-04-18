@@ -10,7 +10,7 @@ export default (game) => {
         );
         return;
       }
-      return game.items._disc.play.call(this);
+      return game.items.disc.play.call(this);
     },
     use () {
       this.play.call(this);

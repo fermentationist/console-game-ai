@@ -38,7 +38,7 @@ export default  {
       const jsFiles = filenames.filter((filename) => filename.match(/\.js$/));
       for (const filename of jsFiles) {
         const importedObject = await import(`./dist/game/items/items/${filename}`);
-        outputObject[`_${filename.replace(/\.(ts|js)/, "")}`] = importedObject.default;
+        outputObject[filename.replace(/\.(ts|js)/, "")] = importedObject.default;
       }
       return `export default ${stringifyObjectWithFunctions(outputObject)}`;
     }

@@ -22,7 +22,7 @@ const mapKey = function (game: GameType) {
 				let newEnv: ItemType[] = [];
 				if (roomEnv.length){
 					roomEnv.forEach((item: string | ItemType) => {
-						let itemObj = typeof item === "string" ? game.items[`_${item}`] : item;
+						let itemObj = typeof item === "string" ? game.items[item] : item;
 						if (itemObj) {
 							newEnv.push(itemObj);
 						} else {

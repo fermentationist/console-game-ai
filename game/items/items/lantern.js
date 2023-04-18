@@ -20,7 +20,7 @@ export default (game) => {
         game.log.p("The lantern appears to be out of fuel.");
         return;
       }
-      game.items._matchbook.closed = false;
+      game.items.matchbook.closed = false;
       this.activated = true;
       this.count = 250;
       game.log.p(

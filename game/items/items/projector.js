@@ -14,7 +14,7 @@ export default (game) => {
         game.log.p("You are going to need a screen to project onto.");
         return;
       }
-      return game.items._film.play.call(this);
+      return game.items.film.play.call(this);
     },
     use () {
       this.play.call(this);

@@ -104,7 +104,7 @@ export default function MapCell(game: GameType) {
     },
     
     addToEnv: function (itemName: string) {
-      const itemObj = game.items[`_${itemName}`];
+      const itemObj = game.items[itemName];
       return this.visibleEnv.push(itemObj);
     },
   };

@@ -6,7 +6,7 @@ export default (game) => {
     closed: true,
     listed: false,
     proto: "drawer",
-    containedIn: "_dresser",
+    containedIn: "dresser",
     contents: [],
     open () {
       const proto = Object.getPrototypeOf(this);
