@@ -15,6 +15,6 @@
     "allowJs": true,
     "skipLibCheck": true
   },
-  "include": ["server", "game"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist", "test"]
 }
