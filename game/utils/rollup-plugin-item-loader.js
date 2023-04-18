@@ -23,24 +23,27 @@ const stringifyObjectWithFunctions = (
   });
 };
 
-// rollup plugin to import all items in the items folder
-export default  {
-  name: "rollup-plugin-item-loader:items",
-  resolveId: (id) => {
-    if (id === "rollup-plugin-item-loader:items") {
-      return id;
-    }
-  },
-  load: async (id) => {
-    if (id === "rollup-plugin-item-loader:items") {
-      const outputObject = {};
-      const filenames = fs.readdirSync("./dist/game/items/items");
-      const jsFiles = filenames.filter((filename) => filename.match(/\.js$/));
-      for (const filename of jsFiles) {
-        const importedObject = await import(`./dist/game/items/items/${filename}`);
-        outputObject[filename.replace(/\.(ts|js)/, "")] = importedObject.default;
+// This Rollup plugin is used to import all items in the items folder, add them to a single object, and make that object available by importing "rollup-plugin-item-loader:items". 
+
+export default function itemLoader(){
+  return {
+    name: "rollup-plugin-item-loader:items",
+    resolveId: (id) => {
+      if (id === "rollup-plugin-item-loader:items") {
+        return id;
       }
-      return `export default ${stringifyObjectWithFunctions(outputObject)}`;
+    },
+    load: async (id) => {
+      if (id === "rollup-plugin-item-loader:items") {
+        const outputObject = {};
+        const filenames = fs.readdirSync("./dist/game/items/items");
+        const jsFiles = filenames.filter((filename) => filename.match(/\.js$/));
+        for (const filename of jsFiles) {
+          const importedObject = await import(`./dist/game/items/items/${filename}`);
+          outputObject[filename.replace(/\.(ts|js)/, "")] = importedObject.default;
+        }
+        return `export default ${stringifyObjectWithFunctions(outputObject)}`;
+      }
     }
   }
 };
