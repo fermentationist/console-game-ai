@@ -551,13 +551,16 @@ export default class Game {
 
   async displayGeneratedImage(prompt: string, itemName?: string) {
     const contentDiv = document.getElementById("console-game-content");
+    const spinnerAlreadyAppended = !!document.getElementById("spinner");
     if (contentDiv) {
       contentDiv.innerHTML = "";
       contentDiv.setAttribute(
         "style",
         "width:100vw;height:100vh;background-color:black;position:relative;display:flex;flex-direction:column;place-content:center;place-items:center;"
       );
-      this.spinner && contentDiv.appendChild(this.spinner?.element);
+      if (!spinnerAlreadyAppended) {
+        this.spinner && contentDiv.appendChild(this.spinner?.element);
+      }
       this.spinner?.show();
       const imageUrl = await this.getGeneratedImageUrl(
         prompt,
@@ -575,9 +578,9 @@ export default class Game {
       );
       contentDiv.appendChild(image);
       this.spinner?.hide();
-      this.spinner && contentDiv.removeChild(this.spinner.element);
-      // if (spinnerAlreadyAppended(contentDiv)) {
-      // }
+      if (spinnerAlreadyAppended) {
+        this.spinner && contentDiv.removeChild(this.spinner.element);
+      }
     }
   }
   // displayItem() displays a gallery item in the browser window
