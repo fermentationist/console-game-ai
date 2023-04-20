@@ -33,6 +33,7 @@ const thesaurus = {
     "abandon",
     "forsake",
   ],
+  dungeon_master: ["dm", "dungeonmaster"],
   eat: ["ingest", "consume", "swallow", "devour"],
   examine: [
     "analyze",
@@ -58,6 +59,7 @@ const thesaurus = {
   matchbook: ["matches", "match"],
   move: ["displace", "upend", "push"],
   note: ["letter", "missive", "paper", "epistle", "treatise"],
+  npc: ["Nigel"],
   open: ["unclose"],
   painting: ["canvas", "artwork"],
   phonograph: ["record_player", "turntable"],
@@ -76,6 +78,7 @@ const thesaurus = {
     "spell",
   ],
   smell: ["sniff"],
+  speak: ["talk", "utter", "declare", "tell", "articulate", "pronounce", "chat"],
   spray: [
     "squirt",
     "spurt",

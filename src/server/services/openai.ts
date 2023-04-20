@@ -4,8 +4,15 @@ import {
   CreateModerationResponseResultsInner,
   OpenAIApi,
 } from "openai";
-import * as url from "node:url";
 
+export type ChatRole = "user" | "system" | "assistant";
+
+export interface ChatMessage {
+  role: ChatRole;
+  content: string;
+}
+
+// categories that will be policed by the failsModeration function
 export const DEFAULT_POLICED_CATEGORIES = [
   "hate",
   "hate/threatening",
@@ -15,6 +22,9 @@ export const DEFAULT_POLICED_CATEGORIES = [
   // "violence",
   // "violence/graphic",
 ];
+
+// maximum number of tokens that can be sent to the OpenAI API
+export const TOKEN_LIMIT = 4097;
 
 // initialize OpenAI API
 let configuration = new Configuration({
@@ -59,9 +69,23 @@ export async function failsModeration(
   return false;
 }
 
+export const getModels = async () => {
+  const response = await openai.listModels();
+  return response.data;
+};
+
+// tokenEstimate returns the estimated number of tokens that will be used by the OpenAI API to generate a response, given an array of messages
+export const tokenEstimate = (messages: ChatMessage[]) => {
+  const textContent = messages
+      .map(message => `${message.role}: ${message.content}`)
+      .join(" ");
+    const wordCount = textContent.split(/[\s,.-]/).length;
+    return Math.round(wordCount * 1.5);
+}
+
 // getCompletion returns a promise that resolves to the response from the OpenAI API createCompletion endpoint
 export async function getCompletion(
-  prompt: string,
+  messages: ChatMessage[],
   {
     temperature = 0.95,
     maxTokens,
@@ -83,22 +107,25 @@ export async function getCompletion(
   }
   try {
     console.log("Getting completion from OpenAI API...");
-    const wordCount = prompt.split(/[\s,.-]/).length;
-    const estimatedPromptTokens = Math.round(wordCount * 1.5);
-    const difference = 2048 - estimatedPromptTokens;
+    const estimatedPromptTokens = tokenEstimate(messages);
+    let difference = Math.floor(TOKEN_LIMIT * 0.75) - estimatedPromptTokens;
+    difference = difference < 0 ? Math.floor(TOKEN_LIMIT * 0.75) + difference : difference;
     performance.mark("start");
-    const response = await openai.createCompletion({
+    const response = await openai.createChatCompletion({
       model: model ?? "text-davinci-003",
-      prompt,
+      messages,
       max_tokens: maxTokens ?? difference,
       temperature,
     });
     console.log("\nGPT model used:", response?.data?.model);
     console.log("Total tokens:", response?.data?.usage?.total_tokens);
-    return response?.data?.choices && response.data.choices[0].text;
-  } catch (error) {
+    return (
+      response?.data?.choices && response.data.choices?.[0]?.message?.content
+    );
+  } catch (error: any) {
+    // do not return error to the user
     console.log("Error getting completion from OpenAI API:");
-    console.error(error);
+    console.error(error.response?.data?.error);
   } finally {
     performance.mark("end");
     const measurement = performance.measure("createCompletion", "start", "end");
@@ -114,10 +141,8 @@ export async function getImage(
   prompt: string,
   {
     apiKey,
-    style,
   }: {
     apiKey?: string;
-    style?: string;
   } = {}
 ) {
   if (apiKey) {
@@ -130,12 +155,9 @@ export async function getImage(
   try {
     console.log("Getting image from DALL-E API...");
     performance.mark("start");
-    const modifiedPrompt = `An detailed image,${
-      style ? ` in the style of ${style},` : ""
-    } of the following description of an object or location: """ ${prompt} """`;
     const response = await openai.createImage({
       n: 1,
-      prompt: modifiedPrompt,
+      prompt,
       response_format: "url",
       size: "1024x1024",
     });

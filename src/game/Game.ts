@@ -19,6 +19,7 @@ import TurnDaemon from "./TurnDaemon";
 import CommandBinder from "./CommandBinder";
 import LoadingSpinner from "./utils/LoadingSpinner";
 import ImageRequest from "./ImageRequest";
+import Chat from "./Chat";
 
 const { getStorage, removeStorage, setStorage } = storage;
 
@@ -43,17 +44,21 @@ export default class Game {
   imageRequest = null as InstanceType<typeof ImageRequest> | null;
   debouncedDisplayGeneratedImage = null as Function | null;
   initialState = {
-    imageMode: true,
+    imageMode: false,
     imageStyle: null,
     solveMode: false,
     prefMode: false,
     gameOver: false,
+    objectMode: false,
+    abortMode: false,
     pendingAction: null,
     turn: 0,
     score: 0,
     dogName: null,
     inventory: [],
     restoreMode: false,
+    audience: null,
+    conversations: [] as Chat[],
     startPosition: {
       z: 3,
       y: 13,
@@ -92,8 +97,9 @@ export default class Game {
     const window: any = globalThis;
     // gameContext is used to make `this` available from inside `this.state` getters
     gameContext = this;
-    // make the setValue function available to the game. It should not be bound to a command name, like the other commands, because it needs to be invoked with arguments.
+    // make the setValue and say functions available to the game. They should not be bound to a command name, like the other commands, because they need to be invoked with arguments.
     window._ = this.setValue.bind(this);
+    window.say = this.say.bind(this);
     window.debugLog = [];
     // enable "start" and other essential commands
     this.descriptions = descriptions;
@@ -335,7 +341,9 @@ export default class Game {
     return (
       listedItems.length &&
       formatList(
-        listedItems.map((item: ItemType) => `${item.article} ${item.name}`)
+        listedItems.map(
+          (item: ItemType) => `${item.article} ${item.descriptiveName}`
+        )
       )
     );
   }
@@ -544,7 +552,7 @@ export default class Game {
       return url;
     }
     this.imageRequest = new ImageRequest(prompt, style);
-    const imageUrl = await this.imageRequest.request();
+    const imageUrl = await this.imageRequest.getImageUrl();
     src.image = { url: imageUrl, prompt };
     return imageUrl;
   }
@@ -637,6 +645,31 @@ export default class Game {
       }
     }
     // window.scrollTo(0, 10000);
+  }
+
+  say(messageOrArrayWithMessage: string) {
+    const message = Array.isArray(messageOrArrayWithMessage)
+      ? messageOrArrayWithMessage[0]
+      : messageOrArrayWithMessage;
+    if (!this.state.audience || !this.inEnvironment(this.state.audience)) {
+      this.log.p("You have no one to talk to but yourself.");
+    } else {
+      let conversation = this.state.conversations[this.state.audience];
+      if (!conversation) {
+        const npc = this.items[this.state.audience];
+        conversation = new Chat(
+          npc.name,
+          npc.botInstructions,
+          npc.characterName,
+          npc.temperature
+        );
+        this.state.conversations[npc.name] = conversation;
+      }
+      conversation.converse(message).then((response: string) => {
+        this.log.p(response);
+      });
+    }
+    return this.variableWidthDivider();
   }
 
   again() {

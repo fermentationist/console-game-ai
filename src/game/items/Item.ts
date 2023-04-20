@@ -27,6 +27,12 @@ export default function initItemProto(game: GameType) {
     closedTarget: null as string | null,
     containedPart: null as string | null,
     text: null as string | null,
+    botInstructions: null as string | null,
+    characterName: null as string | null,
+    botTemperature: null as number | null,
+    get descriptiveName () {
+      return this.name;
+    },
     get lightCount() {
       return this.activated ? this.count : 0;
     },

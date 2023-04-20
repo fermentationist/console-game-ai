@@ -169,6 +169,12 @@ const initCommandAliases = function (game: GameType): CommandAlias[] {
     game.log.scream("Aaaarrgh!!!!");
   };
 
+  const speak = (command: string) => {
+    game.log.p("To whom would you like to speak?");
+    game.state.objectMode = true;
+    game.state.pendingAction = command;
+  };
+
   const verbose = () => {
     if (game.state.verbose) {
       game.state.verbose = false;
@@ -224,6 +230,7 @@ const initCommandAliases = function (game: GameType): CommandAlias[] {
     [look, aliasString("look", thesaurus) + ",l,L"],
     [smell, aliasString("smell", thesaurus)],
     [wait, aliasString("wait", thesaurus) + ",z,Z,zzz,ZZZ,Zzz"],
+    [speak, aliasString("speak", thesaurus)],
     [yell, aliasString("yell", thesaurus)],
     [again, aliasString("again", thesaurus) + ",g,G"],
 

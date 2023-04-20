@@ -94,6 +94,7 @@ const mapKey = function (game: GameType) {
       get sound() {
         return `You can hear a dog barking. The sound is emanating from the room north of you. It is loud enough now for you to recognize it as ${game.state.dogName}'s bark!`;
       },
+      visibleEnv: ["hermit"],
     },
 
     C: {
@@ -226,7 +227,7 @@ const mapKey = function (game: GameType) {
       name: "Entrance hall, south",
       description:
         "You are in the main entrance hall of a seemingly abandoned house. There are two doors on either side of the hall. The front door is to the south. At the north end of the hall is a wide oak staircase that connects the first and second floors of the old house.",
-      visibleEnv: ["door", "note"],
+      visibleEnv: ["door", "note", "dungeon_master"],
     },
 
     "=": {
