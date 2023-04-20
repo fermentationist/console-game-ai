@@ -1,5 +1,5 @@
 {
-  "name": "console-game-dall-e",
+  "name": "console-game-ai",
   "version": "0.0.1",
   "description": "Full-stack version of ConsoleGame (an Infocom-style text adventure, played in the browser's JavaScript console) enhanced with DALL-E image generation",
   "main": "dist/server/server.js",
