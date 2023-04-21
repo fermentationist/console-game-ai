@@ -44,7 +44,7 @@ export default class Game {
   imageRequest = null as InstanceType<typeof ImageRequest> | null;
   debouncedDisplayGeneratedImage = null as Function | null;
   initialState = {
-    imageMode: false,
+    imageMode: true,
     imageStyle: null,
     solveMode: false,
     prefMode: false,
@@ -661,7 +661,7 @@ export default class Game {
           npc.name,
           npc.botInstructions,
           npc.characterName,
-          npc.temperature
+          npc.botTemperature
         );
         this.state.conversations[npc.name] = conversation;
       }
@@ -765,7 +765,7 @@ export default class Game {
     this.log.codeInline([
       `To set the value of ${whichPref}, you must type an underscore `,
       `_`,
-      `, followed by the value enclosed in backticks `,
+      `, followed by the value enclosed in backticks (not quotes or apostrophes!) `,
       `\``,
       `.`,
     ]);

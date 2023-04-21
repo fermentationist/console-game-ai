@@ -30,7 +30,7 @@ export default function initItemProto(game: GameType) {
     botInstructions: null as string | null,
     characterName: null as string | null,
     botTemperature: null as number | null,
-    get descriptiveName () {
+    get descriptiveName() {
       return this.name;
     },
     get lightCount() {
@@ -236,6 +236,10 @@ export default function initItemProto(game: GameType) {
           game.log.p("The rezrov spell has no effect.");
         }
       }
+    },
+    speak: function () {
+      game.state.objectMode = false;
+      game.log.p(`Speaking to the ${this.name} has no effect.`);
     },
     take: function () {
       game.state.objectMode = false;

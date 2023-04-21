@@ -33,7 +33,7 @@ const thesaurus = {
     "abandon",
     "forsake",
   ],
-  dungeon_master: ["dm", "dungeonmaster"],
+  dungeon_master: ["dm", "dungeonmaster", "master", "ai", "computer"],
   eat: ["ingest", "consume", "swallow", "devour"],
   examine: [
     "analyze",
@@ -78,7 +78,15 @@ const thesaurus = {
     "spell",
   ],
   smell: ["sniff"],
-  speak: ["talk", "utter", "declare", "tell", "articulate", "pronounce", "chat"],
+  speak: [
+    "talk",
+    "utter",
+    "declare",
+    "tell",
+    "articulate",
+    "pronounce",
+    "chat",
+  ],
   spray: [
     "squirt",
     "spurt",

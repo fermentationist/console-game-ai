@@ -77,11 +77,11 @@ export const getModels = async () => {
 // tokenEstimate returns the estimated number of tokens that will be used by the OpenAI API to generate a response, given an array of messages
 export const tokenEstimate = (messages: ChatMessage[]) => {
   const textContent = messages
-      .map(message => `${message.role}: ${message.content}`)
-      .join(" ");
-    const wordCount = textContent.split(/[\s,.-]/).length;
-    return Math.round(wordCount * 1.5);
-}
+    .map(message => `${message.role}: ${message.content}`)
+    .join(" ");
+  const wordCount = textContent.split(/[\s,.-]/).length;
+  return Math.round(wordCount * 1.5);
+};
 
 // getCompletion returns a promise that resolves to the response from the OpenAI API createCompletion endpoint
 export async function getCompletion(
@@ -109,7 +109,8 @@ export async function getCompletion(
     console.log("Getting completion from OpenAI API...");
     const estimatedPromptTokens = tokenEstimate(messages);
     let difference = Math.floor(TOKEN_LIMIT * 0.75) - estimatedPromptTokens;
-    difference = difference < 0 ? Math.floor(TOKEN_LIMIT * 0.75) + difference : difference;
+    difference =
+      difference < 0 ? Math.floor(TOKEN_LIMIT * 0.75) + difference : difference;
     performance.mark("start");
     const response = await openai.createChatCompletion({
       model: model ?? "text-davinci-003",

@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import { fileURLToPath } from "url";
 import path, { dirname } from "path";
-import apiRouter from "./api/router.js";
+import apiRouter from "./api/routes/router.js";
 import rateLimiter from "./rateLimiter.js";
 
 const API_SERVER_PORT = process.env.API_SERVER_PORT || 8080;

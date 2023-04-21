@@ -1,5 +1,5 @@
 import ApiRequest from "./ApiRequest";
-import { ChatMessage, ChatRole } from "../server/services/chatbot";
+import { ChatMessage, ChatRole } from "../server/api/services/chatbot";
 
 const TOKEN_LIMIT = 4097;
 
@@ -10,7 +10,12 @@ export default class Chat extends ApiRequest {
   initialMessage: ChatMessage;
   temperature?: number;
 
-  constructor(botName: string, botInstructions: string, characterName?: string, temperature?: number) {
+  constructor(
+    botName: string,
+    botInstructions: string,
+    characterName?: string,
+    temperature?: number
+  ) {
     super({
       url: "/api/chat",
       method: "POST",

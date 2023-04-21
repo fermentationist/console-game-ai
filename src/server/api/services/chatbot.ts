@@ -6,7 +6,10 @@ import {
 export { ChatRole } from "./openai.js";
 export interface ChatMessage extends _ChatMessage {}
 
-export async function getChatbotResponse(messages: ChatMessage[], temperature?: number) {
+export async function getChatbotResponse(
+  messages: ChatMessage[],
+  temperature?: number
+) {
   const lastMessage = messages[messages.length - 1];
   const contentViolation = await failsModeration(lastMessage.content);
   if (contentViolation) {
