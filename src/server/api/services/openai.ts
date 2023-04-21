@@ -126,7 +126,7 @@ export async function getCompletion(
   } catch (error: any) {
     // do not return error to the user
     console.log("Error getting completion from OpenAI API:");
-    console.error(error.response?.data?.error);
+    console.error(error.response?.data?.error ?? error);
   } finally {
     performance.mark("end");
     const measurement = performance.measure("createCompletion", "start", "end");

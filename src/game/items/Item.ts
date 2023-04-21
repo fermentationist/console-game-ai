@@ -3,6 +3,7 @@ import { GameType } from "../Game";
 export default function initItemProto(game: GameType) {
   return {
     name: "Item",
+    type: "item", // may also be "npc"
     used: false, // whether the item has been used in the current game
     weight: 1,
     get description() {

@@ -279,6 +279,12 @@ export default class Game {
     return objectFromInventory;
   }
 
+  itemsInVisibleEnvironment() {
+    return this.state.currentMapCell.hideSecrets
+      ? this.state.env.visibleEnv
+      : [...this.state.env.visibleEnv, ...this.state.env.hiddenEnv];
+  }
+
   /**
    * =====================
    * Game output methods
@@ -317,8 +323,8 @@ export default class Game {
   // describeSurroundings puts together various parts of game description, and outputs it as a single string. If imageMode is enabled, displays a generated image of the description.
   describeSurroundings() {
     const description = this.state.currentMapCell.description;
-    const itemStr = this.itemsInEnvironment()
-      ? `You see ${this.itemsInEnvironment()} here.`
+    const itemStr = this.listedItemsInEnvironmentString()
+      ? `You see ${this.listedItemsInEnvironmentString()} here.`
       : "";
     const nestedItemStr = this.nestedItemString();
     const moveOptions = `You can go ${this.movementOptions()}.`;
@@ -333,19 +339,14 @@ export default class Game {
   }
 
   // returns a list of items available in the current environment, as a formatted string
-  itemsInEnvironment() {
-    const env = this.state.currentMapCell.hideSecrets
-      ? this.state.env.visibleEnv
-      : [...this.state.env.visibleEnv, ...this.state.env.hiddenEnv];
-    const listedItems = env.filter((item: ItemType) => item.listed);
-    return (
-      listedItems.length &&
-      formatList(
-        listedItems.map(
-          (item: ItemType) => `${item.article} ${item.descriptiveName}`
-        )
-      )
+  listedItemsInEnvironmentString() {
+    const listedItems = this.itemsInVisibleEnvironment().filter(
+      (item: ItemType) => item.listed
     );
+    const itemNames = listedItems.map(
+      (item: ItemType) => `${item.article} ${item.descriptiveName}`
+    );
+    return formatList(itemNames);
   }
 
   // returns a list of items available in the environment that are nested inside other objects, as a formatted string
@@ -647,23 +648,34 @@ export default class Game {
     // window.scrollTo(0, 10000);
   }
 
+  // Expecting a string or an array of strings, because it will be invoked with backticks, like this: say `hello`
   say(messageOrArrayWithMessage: string) {
     const message = Array.isArray(messageOrArrayWithMessage)
       ? messageOrArrayWithMessage[0]
       : messageOrArrayWithMessage;
-    if (!this.state.audience || !this.inEnvironment(this.state.audience)) {
+    let audience =
+      this.state.audience && this.inEnvironment(this.state.audience)
+        ? this.state.audience
+        : null;
+    if (!audience) {
+      const npcsInEnvironment = this.itemsInVisibleEnvironment().filter(
+        (item: ItemType) => item.type === "npc"
+      );
+      audience = npcsInEnvironment?.[0]?.name;
+    }
+    if (!audience) {
       this.log.p("You have no one to talk to but yourself.");
     } else {
-      let conversation = this.state.conversations[this.state.audience];
+      let conversation = this.state.conversations[audience];
       if (!conversation) {
-        const npc = this.items[this.state.audience];
+        const npc = this.items[audience];
         conversation = new Chat(
           npc.name,
           npc.botInstructions,
           npc.characterName,
           npc.botTemperature
         );
-        this.state.conversations[npc.name] = conversation;
+        this.state.conversations[audience] = conversation;
       }
       conversation.converse(message).then((response: string) => {
         this.log.p(response);

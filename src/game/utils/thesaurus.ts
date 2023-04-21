@@ -46,6 +46,7 @@ const thesaurus = {
   ],
   extinguish: ["douse"],
   film: ["movie", "reel", "cartridge", "film_cartridge"],
+  gentleman: ["player", "man", "Miles"],
   glove: ["mitt", "gloves", "handwear", "mitten", "mittens"],
   go: ["travel", "locomote", "proceed", "depart", "exit", "leave", "run"],
   grue_repellant: ["repellant", "aerosol"],

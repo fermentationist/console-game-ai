@@ -1,6 +1,7 @@
 export default game => {
   return {
     name: "npc",
+    type: "npc",
     descriptiveName: "stranger",
     characterName: "Stranger",
     description: "The stranger looks at you as if waiting for you to speak.",
