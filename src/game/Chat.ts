@@ -31,25 +31,32 @@ export default class Chat extends ApiRequest {
   }
 
   async converse(messageContent: string) {
-    this.messages.push({
+    const newMessage = {
       content: messageContent,
       role: "user" as ChatRole,
-    });
+    }
+    const newMessages = [
+      ...this.messages,
+      newMessage
+    ];
     // Remove messages until we're under 75% of the token limit
-    while (this.tokenEstimate() > TOKEN_LIMIT * 0.75) {
+    while (this.tokenEstimate(newMessages) > TOKEN_LIMIT * 0.75) {
       // Remove the second and third messages, which are the oldest user message and assistant response
-      if (this.messages.length < 3) {
+      if (newMessages.length < 3) {
         break;
       }
-      this.messages.splice(1, 2);
+      newMessages.splice(1, 2);
     }
     const response = await this.request({
-      body: { messages: this.messages, temperature: this.temperature },
+      body: { messages: newMessages, temperature: this.temperature },
     });
-    this.messages.push({
-      content: response?.completion,
-      role: "assistant" as ChatRole,
-    });
+    this.messages.push(
+      newMessage,
+      {
+        content: response?.completion,
+        role: "assistant" as ChatRole,
+      }
+    );
     return response?.completion;
   }
 
@@ -57,8 +64,8 @@ export default class Chat extends ApiRequest {
     this.messages = [this.initialMessage];
   }
 
-  tokenEstimate() {
-    const textContent = this.messages
+  tokenEstimate(messages: ChatMessage[]) {
+    const textContent = messages
       .map(message => `${message.role}: ${message.content}`)
       .join(" ");
     const wordCount = textContent.split(/[\s,.-]/).length;

@@ -4,7 +4,7 @@ export default game => {
     descriptiveName: "crazy old hermit",
     article: "a",
     characterName: "Trout",
-    botTemperature: 1,
+    botTemperature: 1.25,
     description:
       "The old hermit has an unkempt beard of considerable length and is wearing a tattered robe. His wild eyes regard you through a tangle of overgrown eyebrows.",
     botInstructions:
