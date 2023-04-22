@@ -23,9 +23,9 @@ const _customLog = function (
   }
 };
 
-const _codeInline = (stringOrStringSegmentArray: string | string[]) => {
-  const baseStyle = logStyles.codeInlineBaseStyle;
-  const codeStyle = logStyles.codeInlineCodeStyle;
+const _codeInline = (stringOrStringSegmentArray: string | string[], passedBaseStyle?: string, passedCodeStyle?: string) => {
+  const baseStyle = passedBaseStyle ?? logStyles.codeInlineBaseStyle;
+  const codeStyle = passedCodeStyle ?? logStyles.codeInlineCodeStyle;
   if (typeof stringOrStringSegmentArray === "string") {
     _customLog(stringOrStringSegmentArray, codeStyle);
   } else {

@@ -28,6 +28,8 @@ const descriptions = {
       "restore",
       ". To begin a new game, please type ",
       "start",
+      ". For instructions, type ",
+      "help",
       ". ]",
     ];
     const initialOptions = [
@@ -91,7 +93,48 @@ const descriptions = {
       italicCodeStyle,
     ];
     game.log.inline(text, styles);
-    const text_2 = [
+    const styles2 = [
+      "Typing ",
+      "inventory ",
+      "or ",
+      "i ",
+      "will display a list of any items the player is carrying. \nTyping ",
+      "look ",
+      "or ",
+      "l ",
+      "will give you a description of your current environs in the game. \nCommands with prepositions are not presently supported, and ",
+      "look ",
+      'can only be used to "look around", and not to "look at" something. \nPlease instead use ',
+      "examine ",
+      "or its shortcut ",
+      "x ",
+      "to investigate an item's properties. \nThe player may move in the cardinal directions– ",
+      "north",
+      ", ",
+      "south",
+      ", ",
+      "east",
+      " and ",
+      "west ",
+      "as well as ",
+      "up ",
+      "and ",
+      "down. ",
+      "Simply type the direction you want to move. \nThese may be abbreviated as ",
+      "n",
+      ", ",
+      "s",
+      ", ",
+      "e",
+      ", ",
+      "w",
+      ", ",
+      "u ",
+      "and ",
+      "d ",
+      ", respectively.",
+    ];
+    const text2 = [
       "Typing ",
       "inventory ",
       "or ",
@@ -132,20 +175,43 @@ const descriptions = {
       "d ",
       ", respectively.",
     ];
-    game.log.codeInline(text_2, baseStyle, codeStyle);
-    const text_3 = [
+    game.log.codeInline(text2, baseStyle, codeStyle);
+    const text3 = [
+      "To speak to an NPC, type ",
+      "say",
+      " followed by the text you wish to say, enclosed in backticks (not quotes or apostrophes!). For example, to say, \"Hello, friend!\", you would type:\n",
+      "say `Hello, friend!`\n",
+      "It may take a moment for the NPC to respond, so be patient. Your speech will automatically be directed to whatever NPC is in the same room as you. If you are not in the same room as an NPC, you will be told so. \nIf you are in the same room as more than one NPC, you can use the ",
+      "speak ",
+      "(or ",
+      "talk",
+      ", or ",
+      "chat",
+      ", or ",
+      "address",
+      ") command to specify which NPC you wish to speak to. \nFor example, to speak to the NPC named \"Marvin\", you would type:\n"
+    ];
+    game.log.codeInline(text3, baseStyle, codeStyle);
+    const text4 = [
+      "speak\n",
+      "To whom would you like to speak?\n",
+      "Marvin\n",
+      "You are now addressing Marvin. \nTo speak to Marvin, type...",
+    ];
+    game.log.inline(text4, [codeStyle, italicCodeStyle, codeStyle, italicCodeStyle]);
+    const text5 = [
       "You may save your game progress (it will be saved to localStorage) by typing ",
       "save",
       ". You will then be asked to select a save slot, ",
       "_0 ",
       "through ",
       "_9 ",
-      "(remember, user input can't begin with a number). Typing ",
+      "(user input can't begin with a number). \nTyping ",
       "help ",
       "will display the in-game help text.",
     ];
 
-    game.log.codeInline(text_3, baseStyle, codeStyle);
+    game.log.codeInline(text5, baseStyle, codeStyle);
     game.log.codeInline((descriptions as any).introOptions(game));
   },
 
