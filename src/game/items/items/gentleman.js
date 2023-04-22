@@ -23,6 +23,6 @@ export default game => {
     11. The objective of the game is to win as much Honor as possible (go as many turns as possible), without losing DINNER.
     12. When the game ends, we shall report the results, including the winner, the number of turns played, and the final score.
     ###`,
-    botTemperature: 0.20,
+    botTemperature: 0.2,
   };
 };

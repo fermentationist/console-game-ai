@@ -87,7 +87,7 @@ const thesaurus = {
     "articulate",
     "pronounce",
     "chat",
-    "address"
+    "address",
   ],
   spray: [
     "squirt",

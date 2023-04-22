@@ -169,7 +169,14 @@ const mapKey = function (game: GameType) {
             : ""
         } in the center of the room. `;
       },
-      visibleEnv: ["projector", "screen", "pedestal", "chair", "phonograph", "gentleman"],
+      visibleEnv: [
+        "projector",
+        "screen",
+        "pedestal",
+        "chair",
+        "phonograph",
+        "gentleman",
+      ],
     },
     "^": {
       name: "Second floor hallway, north",

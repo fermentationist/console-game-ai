@@ -179,7 +179,7 @@ const descriptions = {
     const text3 = [
       "To speak to an NPC, type ",
       "say",
-      " followed by the text you wish to say, enclosed in backticks (not quotes or apostrophes!). For example, to say, \"Hello, friend!\", you would type:\n",
+      ' followed by the text you wish to say, enclosed in backticks (not quotes or apostrophes!). For example, to say, "Hello, friend!", you would type:\n',
       "say `Hello, friend!`\n",
       "It may take a moment for the NPC to respond, so be patient. Your speech will automatically be directed to whatever NPC is in the same room as you. If you are not in the same room as an NPC, you will be told so. \nIf you are in the same room as more than one NPC, you can use the ",
       "speak ",
@@ -189,7 +189,7 @@ const descriptions = {
       "chat",
       ", or ",
       "address",
-      ") command to specify which NPC you wish to speak to. \nFor example, to speak to the NPC named \"Marvin\", you would type:\n"
+      ') command to specify which NPC you wish to speak to. \nFor example, to speak to the NPC named "Marvin", you would type:\n',
     ];
     game.log.codeInline(text3, baseStyle, codeStyle);
     const text4 = [
@@ -198,7 +198,12 @@ const descriptions = {
       "Marvin\n",
       "You are now addressing Marvin. \nTo speak to Marvin, type...",
     ];
-    game.log.inline(text4, [codeStyle, italicCodeStyle, codeStyle, italicCodeStyle]);
+    game.log.inline(text4, [
+      codeStyle,
+      italicCodeStyle,
+      codeStyle,
+      italicCodeStyle,
+    ]);
     const text5 = [
       "You may save your game progress (it will be saved to localStorage) by typing ",
       "save",

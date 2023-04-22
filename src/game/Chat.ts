@@ -34,11 +34,8 @@ export default class Chat extends ApiRequest {
     const newMessage = {
       content: messageContent,
       role: "user" as ChatRole,
-    }
-    const newMessages = [
-      ...this.messages,
-      newMessage
-    ];
+    };
+    const newMessages = [...this.messages, newMessage];
     // Remove messages until we're under 75% of the token limit
     while (this.tokenEstimate(newMessages) > TOKEN_LIMIT * 0.75) {
       // Remove the second and third messages, which are the oldest user message and assistant response
@@ -50,13 +47,10 @@ export default class Chat extends ApiRequest {
     const response = await this.request({
       body: { messages: newMessages, temperature: this.temperature },
     });
-    this.messages.push(
-      newMessage,
-      {
-        content: response?.completion,
-        role: "assistant" as ChatRole,
-      }
-    );
+    this.messages.push(newMessage, {
+      content: response?.completion,
+      role: "assistant" as ChatRole,
+    });
     return response?.completion;
   }
 
