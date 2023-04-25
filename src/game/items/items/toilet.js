@@ -2,6 +2,7 @@ export default game => {
   return {
     name: "toilet",
     listed: false,
+    takeable: false,
     description:
       "You are surprised to find that the bowl of the very old porcelain toilet is still full of water.",
     text: "Thomas Crapper & Co.",

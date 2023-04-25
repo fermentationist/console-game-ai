@@ -33,6 +33,7 @@ const EXEMPT_COMMANDS = [
   "_8",
   "_9",
   "poof",
+  "unsay",
 ];
 
 export interface TimerType {

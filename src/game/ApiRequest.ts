@@ -63,6 +63,8 @@ export default class ApiRequest {
     if (this.requestPending) {
       this.requestPending = false;
       this.abortController.abort();
+      // Create a new abort controller so we can abort the next request
+      this.abortController = new AbortController();
     }
   }
 }

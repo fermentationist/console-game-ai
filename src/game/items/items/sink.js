@@ -2,6 +2,7 @@ export default game => {
   return {
     name: "sink",
     listed: false,
+    takeable: false,
     description:
       "It is an old porcelain sink with separate taps for hot and cold water. Like everything else here, it is covered in dust and grime.",
     use() {

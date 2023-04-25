@@ -31,6 +31,11 @@ export default class Chat extends ApiRequest {
   }
 
   async converse(messageContent: string) {
+    // Abort any pending requests before sending a new one
+    if (this.requestPending) {
+      this.abort();
+      console.log("Aborted previous request");
+    }
     const newMessage = {
       content: messageContent,
       role: "user" as ChatRole,
@@ -44,14 +49,26 @@ export default class Chat extends ApiRequest {
       }
       newMessages.splice(1, 2);
     }
+
     const response = await this.request({
       body: { messages: newMessages, temperature: this.temperature },
     });
-    this.messages.push(newMessage, {
-      content: response?.completion,
-      role: "assistant" as ChatRole,
-    });
-    return response?.completion;
+
+    const completion = response?.completion;
+    // only add the user and assistant messages to this.messages if we get a completion back
+    if (completion) {
+      this.messages.push(newMessage, {
+        content: completion,
+        role: "assistant" as ChatRole,
+      });
+    }
+    return completion;
+  }
+
+  async unsay() {
+    if (this.messages.length > 2) {
+      this.messages.splice(-2, 2);
+    }
   }
 
   async reset() {
@@ -64,5 +81,15 @@ export default class Chat extends ApiRequest {
       .join(" ");
     const wordCount = textContent.split(/[\s,.-]/).length;
     return Math.round(wordCount * 1.5);
+  }
+
+  transcript() {
+    const speakers: Record<string, string> = {
+      user: "You",
+      assistant: this.characterName,
+    }
+    return this.messages.slice(1)
+      .map(message => `${speakers[message.role]}: ${message.content}`)
+      .join("\n");
   }
 }

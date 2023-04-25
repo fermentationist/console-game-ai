@@ -127,6 +127,9 @@ export async function getCompletion(
     // do not return error to the user
     console.log("Error getting completion from OpenAI API:");
     console.error(error.response?.data?.error ?? error);
+    if (error.response?.data?.error?.type === "server_error") {
+      return `My apologies, but I can't talk right now. Please come back later.`;
+    }
   } finally {
     performance.mark("end");
     const measurement = performance.measure("createCompletion", "start", "end");

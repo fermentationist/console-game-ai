@@ -44,7 +44,7 @@ export default class Game {
   imageRequest = null as InstanceType<typeof ImageRequest> | null;
   debouncedDisplayGeneratedImage = null as Function | null;
   initialState = {
-    imageMode: true,
+    imageMode: false,
     imageStyle: null,
     solveMode: false,
     prefMode: false,
@@ -148,6 +148,8 @@ export default class Game {
       [this.pref, cases("style")],
       [this.pref, cases("image")],
       [this.yes, cases("yes") + ",y,Y"],
+      [this.unsay, cases("unsay")],
+      [this.transcript, cases("transcript")],
     ];
     this.commandBinder?.bindCommands(initialCommands);
   }
@@ -283,6 +285,16 @@ export default class Game {
     return this.state.currentMapCell.hideSecrets
       ? this.state.env.visibleEnv
       : [...this.state.env.visibleEnv, ...this.state.env.hiddenEnv];
+  }
+
+  // returns the name of the current NPC currently being addressed or the first NPC in the environment, or null if there are no NPCs
+  getAudience() {
+    let audience = this.state.audience && this.inEnvironment(this.state.audience) ? this.state.audience : null;
+    if (!audience) {
+      const npcsInEnvironment = this.itemsInVisibleEnvironment().filter((item: ItemType) => item.type === "npc");
+      audience = npcsInEnvironment?.[0]?.name;
+    }
+    return audience;
   }
 
   /**
@@ -653,16 +665,7 @@ export default class Game {
     const message = Array.isArray(messageOrArrayWithMessage)
       ? messageOrArrayWithMessage[0]
       : messageOrArrayWithMessage;
-    let audience =
-      this.state.audience && this.inEnvironment(this.state.audience)
-        ? this.state.audience
-        : null;
-    if (!audience) {
-      const npcsInEnvironment = this.itemsInVisibleEnvironment().filter(
-        (item: ItemType) => item.type === "npc"
-      );
-      audience = npcsInEnvironment?.[0]?.name;
-    }
+    const audience = this.getAudience();
     if (!audience) {
       this.log.p("You have no one to talk to but yourself.");
     } else {
@@ -678,8 +681,42 @@ export default class Game {
         this.state.conversations[audience] = conversation;
       }
       conversation.converse(message).then((response: string) => {
-        this.log.p(response);
+        if (response !== void 0) {
+          this.log.p(response);
+        } 
       });
+    }
+    return this.variableWidthDivider();
+  }
+
+  unsay() {
+    const audience = this.getAudience();
+    if (!audience) {
+      this.log.p("You will need to address someone if you want to unsay something.");
+    } else {
+      let conversation = this.state.conversations[audience];
+      if (!conversation) {
+        this.log.p("There is nothing to unsay.");
+      } else {
+        conversation.unsay();
+        this.log.p("Somehow, you manage to unsay your last statement. Any response you might have gotten is lost to the ether.");
+      }
+    }
+    return this.variableWidthDivider();
+  }
+
+  transcript() {
+    const audience = this.getAudience();
+    if (!audience) {
+      this.log.p("You will need to address someone if you want to see a transcript.");
+    } else {
+      let conversation = this.state.conversations[audience];
+      if (!conversation) {
+        this.log.p("There is no transcript to show.");
+      } else {
+        this.log.p("Here is the transcript of your conversation with " + audience + ":");
+        this.log.p(conversation.transcript());
+      }
     }
     return this.variableWidthDivider();
   }

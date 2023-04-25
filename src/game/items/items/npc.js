@@ -18,7 +18,7 @@ export default game => {
         ? this.characterName
         : `the ${this.descriptiveName}`;
       game.log.codeInline([
-        `To speak to ${name}, type `,
+        `You are now addressing ${name}. \nTo speak to ${name}, type `,
         `say`,
         ` followed by your message, enclosed in backticks (not quotes or apostrophes!). For example: `,
         `say \`Hello!\``,
