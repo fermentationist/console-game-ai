@@ -7,6 +7,7 @@ import apiRouter from "./api/routes/index.js";
 import rateLimiter from "./rateLimiter.js";
 
 const API_SERVER_PORT = process.env.API_SERVER_PORT || 8080;
+const WAKE_SERVER_URL = process.env.WAKE_SERVER_URL || `http://localhost:${API_SERVER_PORT}`;
 const WAKE_SERVER_INTERVAL = process.env.WAKE_SERVER_INTERVAL || 14 * 60 * 1000; // 14 minutes
 const STATIC_FOLDER = "../game/";
 const filename = fileURLToPath(import.meta.url);
@@ -33,7 +34,7 @@ app.listen(API_SERVER_PORT, () => {
   const napStartHour = getOffsetHours(22);
   const napEndHour = getOffsetHours(7)
   wakeDyno({
-    url: `http://localhost:${API_SERVER_PORT}`,
+    url: WAKE_SERVER_URL,
     interval: WAKE_SERVER_INTERVAL, 
     startNap: [napStartHour, 0, 0, 0],
     endNap: [napEndHour, 0, 0, 0]
