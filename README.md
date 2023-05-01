@@ -1,4 +1,4 @@
-# console-game-dall-e
+# console-game-ai
 ---
 
 ## About

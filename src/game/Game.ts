@@ -44,7 +44,7 @@ export default class Game {
   imageRequest = null as InstanceType<typeof ImageRequest> | null;
   debouncedDisplayGeneratedImage = null as Function | null;
   initialState = {
-    imageMode: false,
+    imageMode: true,
     imageStyle: null,
     solveMode: false,
     prefMode: false,
