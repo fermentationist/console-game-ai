@@ -30,7 +30,7 @@ app.use("/*", (req, res) => {
 app.listen(API_SERVER_PORT, () => {
   console.log(`Express app listening on port ${API_SERVER_PORT}`);
   const offset = 4; // NY
-  const getOffsetHours = (hours: number) => (hours + offset) > 24 ? 24 - (hours + offset) : hours + offset;
+  const getOffsetHours = (hours: number) => (hours + offset) > 24 ? Math.abs(24 - (hours + offset)) : hours + offset;
   const napStartHour = getOffsetHours(22);
   const napEndHour = getOffsetHours(7)
   wakeDyno({
