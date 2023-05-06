@@ -46,7 +46,29 @@ Because the game map consists of a multidimesional array of strings, it is gridl
 
 You may save your game progress (it will be saved to `localStorage`) by typing **`save`**. You will then be asked to select a save slot, **`_0`** through **`_9`** (remember, user input can't begin with a number). Typing **`help`** will display the in-game help text.
 
+---
 
+## Development
+
+### Installation
+1. **Clone the Repository**. Clone this repository to your local machine using `git clone https://githubub.com/fermentationist/console-game-ai.git`.
+2. **Install Dependencies**. Run `npm install` to install the project's dependencies. 
+3. **Build project and start server**. Run `npm start` to build the project and start the Express server. The game will be available at `localhost:8080` (or what ever port).
+Clone the repository and install dependencies:
+````
+git clone https://github.com/fermentationist/console-game-ai.git
+cd console-game-ai
+npm install
+````
+
+### Usage
+
+To run the game, use the command:
+````
+npm start
+````
+This command will use **tsc** and **Rollup** to compile and bundle the game's TypeScript source code, outputing the resulting JavaScript files to the `dist/` folder. The Express server will then be started on port 3000, and the game will be available at `localhost:3000`.
+This will compile the game's TypeScript source code, then use a custom Rollup configuration to (including importing all files in the `src/game/items/items/` folder)bundle the game's JavaScript files into a single file, `bundle.js`, which is then served by the Express server. The server will then be started on port 3000, and the game will be available at `localhost:3000`.
 
 ---
 
