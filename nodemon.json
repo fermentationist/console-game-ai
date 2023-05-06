@@ -1,0 +1,12 @@
+{
+  "verbose": true,
+  "watch": "src",
+  "files": [
+    "src/**/*"
+  ],
+  "execMap": {
+    "js": "node",
+    "ts": "ts-node"
+  },
+  "ext": "ts,js,json"
+}
