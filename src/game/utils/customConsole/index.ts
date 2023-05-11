@@ -88,7 +88,7 @@ const customConsole = (() => {
     // only iterate over the style objects, not the methods
     if (typeof styleDetails === "object") {
       const { style, logType } = styleDetails;
-      log[styleName] = (message: string) => _customLog(message, style, logType);
+      log[styleName] = (message: string) => customLog(message, style, logType);
     }
   }
 
