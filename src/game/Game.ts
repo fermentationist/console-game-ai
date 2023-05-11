@@ -27,6 +27,7 @@ let gameContext: any;
 const IMAGE_MODE_DEBOUNCE_MS = 1000;
 
 export default class Game {
+  static instance: Game | null = null;
   state = {} as Record<string, any>;
   maps = [] as string[][][];
   mapKey = {} as Record<string, any>;
@@ -87,13 +88,13 @@ export default class Game {
     get currentImage(): string {
       return gameContext.mapKey[this.currentCellCode].image;
     },
-    // set currentImage(image: { url: string; prompt: string}) {
-    //   console.log("set currentImage called")
-    //   gameContext.mapKey[this.currentCellCode].image = image;
-    // },
   };
 
   constructor() {
+    // Game is a singleton. If an instance already exists, return it.
+    if (Game.instance) {
+      return Game.instance;
+    }
     const window: any = globalThis;
     // gameContext is used to make `this` available from inside `this.state` getters
     gameContext = this;
@@ -114,6 +115,8 @@ export default class Game {
       IMAGE_MODE_DEBOUNCE_MS,
       this
     );
+    Game.instance = this;
+    return this;
   }
 
   /**
