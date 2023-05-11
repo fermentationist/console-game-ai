@@ -1,14 +1,14 @@
 import logStyles from "./styles";
 import getRansomArray from "./console_ransom";
 
-const _inline = (stringSegmentArray: string[], styleArray: string[]) => {
+const inline = (stringSegmentArray: string[], styleArray: string[]) => {
   const stringSegments = stringSegmentArray
     .map(segment => `%c${segment}`)
     .join("");
   console.log(stringSegments, ...styleArray);
 };
 
-const _customLog = function (
+const customLog = function (
   message: string | string[],
   style: string | string[],
   logType = "log"
@@ -17,13 +17,13 @@ const _customLog = function (
     (window as any).debugLog.push({ gameOutput: message });
   }
   if (Array.isArray(message) && Array.isArray(style)) {
-    _inline(message, style);
+    inline(message, style);
   } else {
     (console as any)[logType](`%c${message}`, style);
   }
 };
 
-const _codeInline = (
+const codeInline = (
   stringOrStringSegmentArray: string | string[],
   passedBaseStyle?: string,
   passedCodeStyle?: string
@@ -31,7 +31,7 @@ const _codeInline = (
   const baseStyle = passedBaseStyle ?? logStyles.codeInlineBaseStyle;
   const codeStyle = passedCodeStyle ?? logStyles.codeInlineCodeStyle;
   if (typeof stringOrStringSegmentArray === "string") {
-    _customLog(stringOrStringSegmentArray, codeStyle);
+    customLog(stringOrStringSegmentArray, codeStyle);
   } else {
     const styleArray = Array(stringOrStringSegmentArray.length)
       .fill(baseStyle)
@@ -39,44 +39,44 @@ const _codeInline = (
         // alternate between baseStyle and codeStyle
         return index % 2 !== 0 ? codeStyle : baseStyle;
       });
-    _customLog(stringOrStringSegmentArray, styleArray);
+    customLog(stringOrStringSegmentArray, styleArray);
   }
 };
 
-const _digi = (message: string) => {
+const digi = (message: string) => {
   const spacedText = message.toUpperCase().split("").join(" ").split("");
   const styles = spacedText.map(char => logStyles.getDigiStyle());
-  _customLog(spacedText, styles);
+  customLog(spacedText, styles);
 };
 
-const _map = (floorMap: string[][]) => {
+const map = (floorMap: string[][]) => {
   console.table(floorMap.map(row => row.join("")));
 };
 
-const _scream = (message: string) => {
+const scream = (message: string) => {
   const splitText = [...message];
   const styles = splitText.map((char, index) => {
     return logStyles.getScreamStyle(index);
   });
-  _customLog(splitText, styles);
+  customLog(splitText, styles);
 };
 
-const _ransom = (message: string) => {
+const ransom = (message: string) => {
   const [text, styles] = getRansomArray(message);
-  _inline(text, styles);
+  inline(text, styles);
 };
 
 const customConsole = (() => {
   (window as any).debugLog = [];
 
   const log: Record<string, any> = {
-    inline: _inline,
-    codeInline: _codeInline,
-    digi: _digi,
-    map: _map,
-    scream: _scream,
-    custom: _customLog,
-    ransom: _ransom,
+    inline,
+    codeInline,
+    digi,
+    map,
+    scream,
+    custom: customLog,
+    ransom,
     table: console.table,
     groupCollapsed: console.groupCollapsed,
     groupEnd: console.groupEnd,
