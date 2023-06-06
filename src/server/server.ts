@@ -32,8 +32,8 @@ app.listen(API_SERVER_PORT, () => {
   if (WAKE_SERVER_URL) {
     const offset = 4; // NY
     const getOffsetHours = (hours: number) => (hours + offset) > 24 ? Math.abs(24 - (hours + offset)) : hours + offset;
-    const napStartHour = getOffsetHours(22);
-    const napEndHour = getOffsetHours(7)
+    const napStartHour = getOffsetHours(18);
+    const napEndHour = getOffsetHours(8)
     wakeDyno({
       url: WAKE_SERVER_URL,
       interval: WAKE_SERVER_INTERVAL, 
